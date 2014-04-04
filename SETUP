@@ -1,0 +1,31 @@
+#!/bin/bash
+set -e
+
+if ! hash go 2> /dev/null ; then
+    echo "go is missing, install manually"
+    exit 1
+else
+    echo "go found"
+fi
+
+if ! hash couchdb 2> /dev/null ; then
+    echo "couchdb not found, will install now"
+    echo
+
+    echo "updating apt"
+    #sudo apt-get update -y -qq
+
+    echo "installing couchdb" 
+    sudo apt-get install \
+        couchdb \
+        couchdb-bin \
+        couchdb-common \
+        -y -qq
+
+    echo "finished."
+else
+    echo "couchdb found"
+fi
+
+echo
+echo "all set... relax!"

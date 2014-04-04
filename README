@@ -1,0 +1,11 @@
+# Relax
+
+Try out to see if couchdb or such could be a possible solution. Advantages we see on forehand:
+
+* Denormalization out of the box
+* Proven technology
+* Master-master setup
+
+## Setup dev environment
+
+You can setup the local dev environment by running `SETUP`.
