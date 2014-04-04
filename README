@@ -1,6 +1,6 @@
 # Relax
 
-Try out to see if couchdb or such could be a possible solution. Advantages we see on forehand:
+Try out to see if couchdb or such could be a possible solution for a performance critical website. Advantages I see on forehand:
 
 * Denormalization out of the box
 * Proven technology
@@ -9,3 +9,7 @@ Try out to see if couchdb or such could be a possible solution. Advantages we se
 ## Setup dev environment
 
 You can setup the local dev environment by running `SETUP`.
+
+## Seeding the database
+
+    go run seeder/*.go
