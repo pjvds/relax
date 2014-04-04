@@ -13,14 +13,17 @@ type User struct {
     Rev string `json:"_rev,omitempty"`
     Username string `json:"username"`
     Fullname string `json:"fullname"`
-    BirthDate time.Time `json:"birthdate"`
+    Birthdate time.Time `json:"birthdate"`
     Email string `json:"email"`
 
-    DocType string `json:"doc-type"`
+    LookingFor *LookingFor `json:"looking-for"`
+
+    Type string `json:"type"`
 }
 
 func main() {
     c, _ := couch.NewClientURL("http://127.0.0.1:5984/relax")
+    c.DeleteDB()
     c.CreateDB()
 
     users, err := GenerateUsers()
@@ -49,7 +52,7 @@ func GenerateUsers() (users []*User, err error) {
     }
 
     for _, user := range users {
-        user.DocType = "user"
+        user.Type = "user"
     }
 
     fmt.Printf("users loaded\n")
@@ -63,7 +66,7 @@ func InsertUsers(c *couch.Client, users []*User) (err error) {
         // if _, err = c.Save(users[0]); err != nil {
         //     return
         // }
-        chunk := min(1000, len(users)-i)
+        chunk := min(10000, len(users)-i)
 
         var bulk []interface{}
         for _, user := range users[i:i+chunk] {
