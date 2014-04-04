@@ -6,7 +6,14 @@ import(
     "os"
     "encoding/json"
     "time"
+    "math/rand"
 )
+
+type LookingFor struct {
+    Gender string `json:"gender"`
+    MinAge int `json:"min-age"`
+    MaxAge int `json:"max-age"`
+}
 
 type User struct {
     ID string `json:"_id,omitempty"`
@@ -18,6 +25,7 @@ type User struct {
 
     LookingFor *LookingFor `json:"looking-for"`
 
+    // Should always be set to "user" for this type.
     Type string `json:"type"`
 }
 
@@ -53,6 +61,11 @@ func GenerateUsers() (users []*User, err error) {
 
     for _, user := range users {
         user.Type = "user"
+        
+        simpleAge := time.Now().Year() - user.Birthdate.Year()
+
+        user.LookingFor.MinAge = 18 + rand.Intn(max(simpleAge - 18, 1))
+        user.LookingFor.MaxAge = 99 - rand.Intn(max(99 - simpleAge, 0))
     }
 
     fmt.Printf("users loaded\n")
@@ -91,6 +104,14 @@ func InsertUsers(c *couch.Client, users []*User) (err error) {
 
 func min(x, y int) int {
     if x < y {
+        return x
+    }
+
+    return y
+}
+
+func max(x, y int) int {
+    if x > y {
         return x
     }
 
