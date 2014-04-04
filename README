@@ -12,4 +12,4 @@ You can setup the local dev environment by running `SETUP`.
 
 ## Seeding the database
 
-    go run seeder/*.go
+    cd seeder ; go run *.go
