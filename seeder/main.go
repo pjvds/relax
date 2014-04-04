@@ -20,7 +20,7 @@ type User struct {
 }
 
 func main() {
-    c, _ := couch.NewClientURL("http://127.0.0.1:5984/hpc")
+    c, _ := couch.NewClientURL("http://127.0.0.1:5984/relax")
     c.CreateDB()
 
     users, err := GenerateUsers()
