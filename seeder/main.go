@@ -5,7 +5,6 @@ import(
     "fmt"
     "os"
     "encoding/json"
-    "time"
     "math/rand"
 )
 
@@ -20,7 +19,7 @@ type User struct {
     Rev string `json:"_rev,omitempty"`
     Username string `json:"username"`
     Fullname string `json:"fullname"`
-    Birthdate time.Time `json:"birthdate"`
+    Birthdate string `json:"birthdate"`
     Email string `json:"email"`
 
     LookingFor *LookingFor `json:"looking-for"`
@@ -60,12 +59,8 @@ func GenerateUsers() (users []*User, err error) {
     }
 
     for _, user := range users {
-        user.Type = "user"
-        
-        simpleAge := time.Now().Year() - user.Birthdate.Year()
-
-        user.LookingFor.MinAge = 18 + rand.Intn(max(simpleAge - 18, 1))
-        user.LookingFor.MaxAge = 99 - rand.Intn(max(99 - simpleAge, 0))
+        user.LookingFor.MinAge = 18 + rand.Intn(99-25) // => 18 && <= 74
+        user.LookingFor.MaxAge = 99 - rand.Intn(user.LookingFor.MinAge) // => minAge && <= 99
     }
 
     fmt.Printf("users loaded\n")
@@ -75,7 +70,7 @@ func GenerateUsers() (users []*User, err error) {
 func InsertUsers(c *couch.Client, users []*User) (err error) {
     fmt.Printf("insert users into couch\n")
 
-    for i := 0; i < len(users); {
+    for i := 0; i < min(100, len(users)); {
         // if _, err = c.Save(users[0]); err != nil {
         //     return
         // }
